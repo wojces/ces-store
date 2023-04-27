@@ -6,12 +6,14 @@
       </div>
       <div class="product__text">
         <h3>{{ title }}</h3>
-        <base-badge mode="highlight"><h4>{{ price }} zł</h4></base-badge>
+        <base-badge mode="highlight"
+          ><h4>{{ price }} zł</h4></base-badge
+        >
         <p>{{ description }}</p>
       </div>
     </div>
     <div class="product__action">
-      <base-button>Dodaj do koszyka</base-button>
+      <base-button @click="addToCart">Dodaj do koszyka</base-button>
     </div>
   </li>
 </template>
@@ -19,6 +21,11 @@
 <script>
 export default {
   props: ["id", "title", "image", "description", "price"],
+  methods: {
+    addToCart() {
+      this.$store.dispatch("cart/addToCart", { id: this.id });
+    },
+  },
 };
 </script>
 
@@ -55,5 +62,4 @@ li {
 .product__action {
   text-align: center;
 }
-
 </style>
