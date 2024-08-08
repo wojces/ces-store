@@ -1,11 +1,11 @@
 <template>
   <footer>
     <nav>
-      <h3>
-        Dzięki za odwiedziny Ces's store
-      </h3>
+      <h3 v-if="isLoggedIn">Dzięki za odwiedziny sklepu</h3>
+      <h3 v-if="!isLoggedIn">Odwiedź sklep Window Store</h3>
+
       <ul>
-        <li>
+        <li v-if="isLoggedIn">
           <router-link to="/">Wróć na stronę główną</router-link>
         </li>
       </ul>
@@ -13,14 +13,22 @@
   </footer>
 </template>
 
+<script>
+export default {
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
+  },
+};
+</script>
+
 <style scoped>
 footer {
   width: 100%;
   height: 60px;
   background-color: rgba(108, 108, 108, 0.5);
-  display: flex;
-  position: fixed;
-  bottom: 0;
+  padding-top: 16px;
 }
 
 footer a {
@@ -35,7 +43,6 @@ a:active,
 a:hover,
 a.router-link-active {
   border: 1px solid none;
-
 }
 
 h3 {

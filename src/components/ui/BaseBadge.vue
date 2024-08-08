@@ -25,12 +25,12 @@ export default {
 }
 
 .badge--highlight {
-  background-color: rgb(48, 152, 255);
+  background-color: rgba(50, 101, 255, 0.5);
   color: black;
 }
 
 .badge--elegant {
-  background-color: blue;
-  color: white;
+  background-color:rgba(50, 101, 255, 0.5);
+  color: black;
 }
 </style>

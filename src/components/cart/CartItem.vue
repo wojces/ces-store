@@ -8,9 +8,13 @@
           Cena produktu:
           <strong>{{ price }} zł</strong>
         </div>
-        <div>
-          Ilość:
-          <strong>{{ qty }}</strong>
+        <div class="qty">
+          <div><base-button @click="addOne">+</base-button></div>
+          <div>
+            Ilość:
+            <strong>{{ qty }}</strong>
+          </div>
+          <div><base-button @click="deleteOne">-</base-button></div>
         </div>
       </div>
       <div class="item__total">Razem: {{ itemTotal }} zł</div>
@@ -21,7 +25,7 @@
 
 <script>
 export default {
-  props: ["prodId", "title", "image", "price", "qty"],
+  props: ["id", "title", "image", "price", "qty"],
   computed: {
     itemTotal() {
       return (this.price * this.qty).toFixed(2);
@@ -29,7 +33,17 @@ export default {
   },
   methods: {
     remove() {
-      this.$store.dispatch("cart/removeFromCart", { productId: this.prodId });
+      this.$store.dispatch("cart/removeFromCart", { productId: this.id });
+    },
+    addOne() {
+      this.$store.dispatch("cart/addOneProd", { productId: this.id });
+    },
+    deleteOne() {
+      if (this.qty === 1) {
+        this.$store.dispatch("cart/removeFromCart", { productId: this.id });
+        return;
+      }
+      this.$store.dispatch("cart/deleteOneProd", { productId: this.id });
     },
   },
 };
@@ -54,6 +68,12 @@ img {
   justify-content: space-between;
 }
 
+.item__data .qty {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
 .item__total {
   font-weight: bold;
   margin: 16px 0;
@@ -62,5 +82,4 @@ img {
   padding: 4px;
   width: auto;
 }
-
 </style>

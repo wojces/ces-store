@@ -2,19 +2,21 @@
   <header>
     <nav>
       <h1>
-        <router-link to="/">Ces's store</router-link>
+        <router-link to="/">Window Store</router-link>
       </h1>
       <ul>
-        <li>
+        <li v-if="isLoggedIn">
           <router-link to="/products">Produkty</router-link>
         </li>
-        <li>
-          <router-link to="/cart">Koszyk</router-link>
+        <li v-if="isLoggedIn">
+          <router-link to="/cart">Koszyk {{ cartQuantity }}</router-link>
         </li>
-        <li>
+        <li v-if="isLoggedIn">
           <router-link to="/account">Konto</router-link>
         </li>
-        <li v-if="isLoggedIn">Wyloguj</li>
+        <li v-if="isLoggedIn" @click="logout">
+          <router-link to="/">Wyloguj</router-link>
+        </li>
         <li v-else>
           <router-link to="/auth">Zaloguj</router-link>
         </li>
@@ -26,8 +28,17 @@
 <script>
 export default {
   computed: {
+    cartQuantity() {
+      return this.$store.getters["cart/quantity"];
+    },
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+      this.$router.push("/auth");
     },
   },
 };

@@ -13,7 +13,6 @@ export default {
       const productInCartIndex = state.items.findIndex(
         (ci) => ci.productId === productData.id
       );
-
       if (productInCartIndex >= 0) {
         state.items[productInCartIndex].qty++;
       } else {
@@ -38,9 +37,21 @@ export default {
       const prodData = state.items[productInCartIndex];
       state.items.splice(productInCartIndex, 1);
       state.qty -= prodData?.qty;
-
-      state.total -= (prodData?.price * prodData?.qty);
-      console.log(state.total)
+      state.total -= prodData?.price * prodData?.qty;
+    },
+    addOneProd(state, payload) {
+      const prodId = payload.productId;
+      const productInCartIndex = state.items.findIndex(cartItem => cartItem.productId === prodId)
+      state.items[productInCartIndex].qty++;
+      state.qty++;
+      state.total += state.items[productInCartIndex].price
+    },
+    deleteOneProd(state, payload) {
+      const prodId = payload.productId;
+      const productInCartIndex = state.items.findIndex(cartItem => cartItem.productId === prodId)
+      state.items[productInCartIndex].qty--;
+      state.qty--;
+      state.total -= state.items[productInCartIndex].price
     },
   },
 
@@ -53,10 +64,17 @@ export default {
     },
     removeFromCart(context, payload) {
       context.commit('removeProductFromCart', payload)
-    }
+    },
+    addOneProd(context, payload) {
+      context.commit('addOneProd', payload)
+    },
+    deleteOneProd(context, payload) {
+      context.commit('deleteOneProd', payload)
+    },
+
   },
   getters: {
-    productsInCart(state) {
+    products(state) {
       return state.items
     },
     totalSum(state) {
